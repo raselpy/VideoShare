@@ -1,15 +1,26 @@
 <?php
 
-namespace App;
+namespace VideoShare;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
+    public $incrementing = false;
+
+    public static function boot()
+	{
+        parent::boot();
+    	self::creating(function ($model) {
+    	    $model->{$model->getKeyName()} = Str::uuid();
+    	});
+	}
+    
     /**
      * The attributes that are mass assignable.
      *
